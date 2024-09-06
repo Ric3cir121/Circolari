@@ -1,0 +1,11 @@
+# Related to the project
+prv.py
+data.json
+data.old.json
+
+# Pyrogram
+app.session
+app.session-journal
+
+# Python
+__pycache__/
