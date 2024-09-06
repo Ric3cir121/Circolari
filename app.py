@@ -1,4 +1,4 @@
-import requests, asyncio, pyrogram, prv, traceback, json, os
+import requests, asyncio, pyrogram, prv, traceback, json, os, html
 
 app = None
 
@@ -71,11 +71,13 @@ async def getCircolari():
         return circolari
 
 async def formatCircolare(circolare):
-    return f"❇️ <a href=\"{circolare['url']}\"><b>{circolare['title']}</b></a>\n{circolare['description']}\n<i>{circolare['number']}</i>"
+    return (f"❇️ <a href=\"{html.escape(circolare['url'])}\"><b>{html.escape(circolare['title'])}</b></a>\n" +
+            f"{html.escape(circolare['description'])}\n" +
+            f"<i>{html.escape(circolare['number'])}</i>")
 
 async def broadcastUpdate(text):
     global app
-    await app.send_message(chat_id=-1002170939823, text=text, parse_mode=pyrogram.enums.ParseMode.HTML)
+    await app.send_message(chat_id=prv.sendToChatId, text=text, parse_mode=pyrogram.enums.ParseMode.HTML)
 
 async def circolariLoop():
     await asyncio.sleep(10)
