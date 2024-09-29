@@ -85,6 +85,7 @@ async def circolariLoop():
     circolari = data.get("circolari", {})
     statusCode = data.get("statusCode", 0)
     updatedStatusCode = data.get("updatedStatusCode", 0)
+    failedUpdates = 0
     while True:
         newCircolari = {}
         try:
@@ -96,9 +97,14 @@ async def circolariLoop():
         except:
             traceback.print_exc()
             updatedStatusCode = 1
-            
+        
+        if updatedStatusCode != 0:
+            failedUpdates += 1
+        else:
+            failedUpdates = 0
+
         if app:
-            if statusCode != updatedStatusCode:
+            if statusCode != updatedStatusCode and failedUpdates >= 10:
                 code = [
                     "OK",
                     "EXCEPTION_ON_FETCH",
